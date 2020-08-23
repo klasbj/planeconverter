@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PlaneConverter.Properties;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -8,11 +10,14 @@ using System.Windows.Forms;
 
 namespace PlaneConverter
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        private IDictionary<string, string> lastBrowsedPaths;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -23,12 +28,20 @@ namespace PlaneConverter
 
             Convert.Click += ConvertClick;
             LayoutUpdate.Click += LayoutUpdateClick;
+
+            Tabs.SelectedIndex = Settings.Default.LastUsedTab;
+            PackageName.Text = Settings.Default.PackagePrefix + "-";
+            TargetDirectory.Text = Settings.Default.TargetFolder;
+            lastBrowsedPaths = JsonSerializer.Deserialize<Dictionary<string,string>>(Settings.Default.LastBrowsedPaths);
         }
 
         private void LayoutUpdateClick(object sender, RoutedEventArgs _e)
         {
             try
             {
+                Settings.Default.LastUsedTab = Tabs.SelectedIndex;
+                Settings.Default.Save();
+
                 WriteLayout(LayoutUpdatePackageDirectory.Text);
                 System.Windows.MessageBox.Show("Successfully updated layout.json");
             }
@@ -47,6 +60,11 @@ namespace PlaneConverter
 
             try
             {
+
+                Settings.Default.PackagePrefix = PackageName.Text.Split("-")[0];
+                Settings.Default.TargetFolder = TargetDirectory.Text;
+                Settings.Default.LastUsedTab = Tabs.SelectedIndex;
+                Settings.Default.Save();
 
                 var dirName = Path.GetFileName(SourceDirectory.Text);
 
@@ -131,10 +149,18 @@ namespace PlaneConverter
                 Description = $"Select {title}"
             };
 
+            if (string.IsNullOrEmpty(openDialog.SelectedPath) && lastBrowsedPaths.TryGetValue(title, out var path))
+            {
+                openDialog.SelectedPath = path;
+            }
+
             var result = openDialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 textBox.Text = openDialog.SelectedPath;
+                lastBrowsedPaths[title] = openDialog.SelectedPath;
+                Settings.Default.LastBrowsedPaths = JsonSerializer.Serialize(lastBrowsedPaths);
+                Settings.Default.Save();
             }
         }
 

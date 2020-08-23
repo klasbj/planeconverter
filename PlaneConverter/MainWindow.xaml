@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PlaneConverter"
         mc:Ignorable="d"
         Title="PlaneConverter" Height="480" Width="330" MinHeight="480">
-    <TabControl>
+    <TabControl Name="Tabs">
         <TabItem Header="Update layout.json">
             <StackPanel>
                 <Label Content="Package to update" Margin="0,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
