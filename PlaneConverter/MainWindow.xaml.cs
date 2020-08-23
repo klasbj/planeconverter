@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace PlaneConverter
@@ -20,9 +19,23 @@ namespace PlaneConverter
 
             SourceDirectoryBrowse.Click += (a, b) => PopupFileDialog("source", SourceDirectory);
             TargetDirectoryBrowse.Click += (a, b) => PopupFileDialog("target", TargetDirectory);
+            LayoutUpdatePackageDirectoryBrowse.Click += (a, b) => PopupFileDialog("package", LayoutUpdatePackageDirectory);
 
             Convert.Click += ConvertClick;
+            LayoutUpdate.Click += LayoutUpdateClick;
+        }
 
+        private void LayoutUpdateClick(object sender, RoutedEventArgs _e)
+        {
+            try
+            {
+                WriteLayout(LayoutUpdatePackageDirectory.Text);
+                System.Windows.MessageBox.Show("Successfully updated layout.json");
+            }
+            catch (Exception e)
+            {
+                System.Windows.MessageBox.Show($"Error: {e}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void ConvertClick(object sender, RoutedEventArgs _e)
@@ -30,7 +43,7 @@ namespace PlaneConverter
             var tempPath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
             File.Delete(tempPath);
             Directory.CreateDirectory(tempPath);
-            Console.Error.WriteLine($"Using temp directory: {tempPath}");
+            Debug.WriteLine($"Using temp directory: {tempPath}");
 
             try
             {
@@ -77,11 +90,11 @@ namespace PlaneConverter
         {
             var files = Directory.EnumerateFiles(path, "*", SearchOption.AllDirectories).Select(f => new FileInfo(f)).Select(f => new FileData
             {
-                Path = Path.GetRelativePath(path, f.FullName),
+                Path = Path.GetRelativePath(path, f.FullName).Replace('\\', '/'),
                 Size = f.Length
-            }).ToList();
+            }).Where(f => !f.Path.Equals("layout.json", StringComparison.InvariantCultureIgnoreCase)).ToList();
 
-            files.ForEach(x => Console.Error.WriteLine($"File: {x}"));
+            files.ForEach(x => Debug.WriteLine($"File: {x}"));
 
             var layout = new
             {
@@ -155,8 +168,13 @@ namespace PlaneConverter
 
     public class FileData
     {
-        public string? Path { get; set; }
+        public string Path { get; set; } = string.Empty;
         public long Size { get; set; }
         public long Date => DateTime.Today.ToFileTime();
+
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize(this);
+        }
     }
 }
