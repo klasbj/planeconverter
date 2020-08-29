@@ -73,7 +73,7 @@ namespace PlaneConverter
                 JsonIfyTextures(tempPath);
                 WriteLayout(tempPath);
                 CopyFiles(Path.Combine(TargetDirectory.Text, PackageName.Text), tempPath);
-
+                
                 System.Windows.MessageBox.Show("Successfully converted simobject");
             }
             catch (Exception e)
@@ -128,7 +128,16 @@ namespace PlaneConverter
 
         private void CopyFiles(string to, string from)
         {
-            Directory.CreateDirectory(to);
+            try
+            {
+                Directory.CreateDirectory(to);
+            }
+            catch (Exception e)
+            {
+                System.Windows.MessageBox.Show("There was an issue creating the directory\n" + e.Message);
+                throw;
+            }
+            
             foreach (string full in Directory.EnumerateFiles(from, "*", SearchOption.AllDirectories))
             {
                 var f = Path.GetRelativePath(from, full);
