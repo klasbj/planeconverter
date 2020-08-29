@@ -110,7 +110,7 @@ namespace PlaneConverter
             {
                 Path = Path.GetRelativePath(path, f.FullName).Replace('\\', '/'),
                 Size = f.Length
-            }).Where(f => !f.Path.Equals("layout.json", StringComparison.InvariantCultureIgnoreCase)).ToList();
+            }).Where(f => !f.Path.Equals("layout.json", StringComparison.InvariantCultureIgnoreCase) && f.Path.Substring(0, 1) != ".").ToList();
 
             files.ForEach(x => Debug.WriteLine($"File: {x}"));
 
