@@ -72,7 +72,15 @@ namespace PlaneConverter
                 CopyFiles(Path.Combine(tempPath, "SimObjects", "Airplanes", dirName), SourceDirectory.Text);
                 JsonIfyTextures(tempPath);
                 WriteLayout(tempPath);
-                CopyFiles(Path.Combine(TargetDirectory.Text, PackageName.Text), tempPath);
+                if (Directory.Exists(TargetDirectory.Text))
+                {
+                    CopyFiles(Path.Combine(TargetDirectory.Text, PackageName.Text), tempPath);
+                }
+                else
+                {
+                    Directory.CreateDirectory(TargetDirectory.Text);
+                    CopyFiles(Path.Combine(TargetDirectory.Text, PackageName.Text), tempPath);
+                }
 
                 System.Windows.MessageBox.Show("Successfully converted simobject");
             }
