@@ -1,7 +1,9 @@
 ### Readme 
 
 This application will take an old Microsoft Flight Simulator X (FSX) 
-and convert the files and textures to the newer Microsoft Flight Simulator 2020 (MSFS) format
+and convert the file structure to the newer Microsoft Flight Simulator 2020 (MSFS) format
+* Note: currently this does not convert any specific files, just creates and updates the MSFS's JSON files to read the older aircraft files.
+	You likely will need to update the textures and guages to make the plane functional.
 
 ## How To
 
@@ -13,5 +15,5 @@ and convert the files and textures to the newer Microsoft Flight Simulator 2020 
 ## To Do
 
 ## Prerequisits
-.Net Framework 3.5 development tools 
-(link?)
+[.Net Framework 3.1 development tools ](https://docs.microsoft.com/en-us/dotnet/core/install/windows?tabs=netcore31)
+[Visual Studio 2019 (Optional)](https://visualstudio.microsoft.com/downloads/)
