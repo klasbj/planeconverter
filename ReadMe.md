@@ -7,6 +7,8 @@ and convert the file structure to the newer Microsoft Flight Simulator 2020 (MSF
 
 ## How To
 
+Coming soon
+
 ## Known issues
 * While converter will make these files readable by Microsoft Flight, it is very likely you will need to modify the textures
   and other resources to make it work properly.
@@ -14,6 +16,8 @@ and convert the file structure to the newer Microsoft Flight Simulator 2020 (MSF
 
 ## To Do
 
+* Make a better ToDo list ^_^
+
 ## Prerequisits
-[.Net Framework 3.1 development tools ](https://docs.microsoft.com/en-us/dotnet/core/install/windows?tabs=netcore31)
-[Visual Studio 2019 (Optional)](https://visualstudio.microsoft.com/downloads/)
+* [.Net Framework 3.1 development tools ](https://docs.microsoft.com/en-us/dotnet/core/install/windows?tabs=netcore31)
+* [Visual Studio 2019 (Optional)](https://visualstudio.microsoft.com/downloads/)
