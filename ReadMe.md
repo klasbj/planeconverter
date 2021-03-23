@@ -1,4 +1,4 @@
-### Readme 
+# Readme 
 
 This application will take an old Microsoft Flight Simulator X (FSX) 
 and convert the file structure to the newer Microsoft Flight Simulator 2020 (MSFS) format
